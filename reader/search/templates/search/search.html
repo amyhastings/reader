@@ -1,6 +1,29 @@
 <body>
     <h1>Search</h1>
-    <label for="book_title">Search for books</label>
-    <input type="text" id="book_title" name="book_title"><br><br>
-    <button type="submit">Submit</button>
+    <form>
+        <label for="book_title">Search for books</label>
+        <input type="text" id="book_title" name="book_title"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <h3>Author results</h3>
+    {% for result in author_results %}
+        <img src="https://covers.openlibrary.org/b/isbn/{{result.isbn.0}}-S.jpg" />
+        <p>Author name:
+            {% for author in result.author_name %}
+                {{ author }}
+            {% endfor %}
+        </p>
+        <p>Title: {{ result.title }}</p>
+        <p>ISBN: {{ result.isbn }}</p>
+    {% endfor %}
+    <h3>Book results</h3>
+    {% for result in book_results %}
+        <p>Author name:
+            {% for author in result.author_name %}
+                {{ author }}
+            {% endfor %}
+        </p>
+        <p>Title: {{ result.title }}</p>
+    {% endfor %}
+    {{ results }}
 </body>
