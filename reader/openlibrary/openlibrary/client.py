@@ -1,3 +1,11 @@
+import math
+
+class searchResult:
+    def __init__(self, _count, _results):
+        self.count = _count
+        self.results = _results
+        self.pages = range(1, (math.ceil(self.count / 100)+1))
+
 class OpenLibraryClient:
     BASE_URL = "https://openlibrary.org"
 
@@ -22,12 +30,13 @@ class OpenLibraryClient:
     def get_subjects(self, params=None):
         return self._get("/subjects", params)
 
-    def search_book(self, searchString):
-        olResponse = self._get("/search.json", {'title': searchString, 'fields': 'key,title,author_name,isbn,publish_year'})
-        return olResponse['docs']
+    def search_book(self, searchString, page):
+        olResponse = self._get("/search.json", {'title': searchString, 'fields': 'key,title,author_name,isbn,first_publish_year,edition_count,cover_i', 'page': page})
+        result = searchResult(olResponse['num_found'], olResponse['docs'])
+        return result
     
     def search_author(self, searchString):
-        olResponse = self._get("/search.json", {'author': searchString, 'fields': 'key,title,author_name,isbn,publish_year'})
+        olResponse = self._get("/search.json", {'author': searchString, 'fields': 'key,title,author_name,isbn,first_publish_year,edition_count,cover_i'})
         return olResponse['docs']
     
     def get_cover_by_id(self, coverId):
