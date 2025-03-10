@@ -14,11 +14,23 @@ function openSearchResults(evt, resultType) {
   
     document.getElementById(resultType).style.display = "block";
     evt.currentTarget.className += " active";
-  }
-
-  document.getElementById("defaultOpen").click();
+};
 
 function submitForm(page) {
-  document.getElementById('book_page').value = page;
-  document.getElementById('search_form').submit();
-}
+  document.getElementById("book_page").value = page;
+  document.getElementById("search_form").submit();
+};
+
+function findGetParameter(parameterName) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(parameterName);
+};
+
+window.onload = function() {
+  var authorId = findGetParameter("author_page");
+  if (authorId) {
+    document.getElementById("authorTab").click();
+  } else {
+    document.getElementById("titleTab").click();
+  }
+};

@@ -35,9 +35,10 @@ class OpenLibraryClient:
         result = searchResult(olResponse['num_found'], olResponse['docs'])
         return result
     
-    def search_author(self, searchString):
-        olResponse = self._get("/search.json", {'author': searchString, 'fields': 'key,title,author_name,isbn,first_publish_year,edition_count,cover_i'})
-        return olResponse['docs']
+    def search_author(self, searchString, page):
+        olResponse = self._get("/search.json", {'author': searchString, 'fields': 'key,title,author_name,isbn,first_publish_year,edition_count,cover_i', 'page': page})
+        result = searchResult(olResponse['num_found'], olResponse['docs'])
+        return result
     
     def get_cover_by_id(self, coverId):
         return

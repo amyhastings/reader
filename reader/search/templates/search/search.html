@@ -18,81 +18,96 @@
                         <button type="submit">Submit</button>
                     </form>
                 </div>
-                <div class="tab">
-                    <button class="tablinks" onclick="openSearchResults(event, 'Titles')" id="defaultOpen">Titles</button>
-                    <button class="tablinks" onclick="openSearchResults(event, 'Authors')">Authors</button>
-                </div>
-                <div id="Titles" class="tabcontent">
-                    {% for result in book_results.results %}
-                    <div class="results-container d-flex flex-column flex-md-row">
-                        <a class="text-decoration-none d-flex flex-column flex-md-row" href="#">
-                            <div class="results-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
-                                {% if result.cover_i %}
-                                    <img src="https://covers.openlibrary.org/b/id/{{result.cover_i}}-M.jpg" alt="Book cover">
-                                {% else %}
-                                    <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
-                                {% endif %}
-                            </div>
-                            <div class="results-text flex-grow-1 d-flex flex-column">
-                                <h4>{{ result.title|truncatechars:50 }}</h4>
-                                <p>
-                                    {% if result.author_name|length == 1 %}
-                                        by {{ result.author_name.0|truncatechars:80 }}
-                                    {% elif result.author_name|length > 1 %}
-                                        by {{ result.author_name|join:", "|truncatechars:80 }}
-                                    {% else %}
-                                        Author Not Found
-                                    {% endif %}
-                                </p>
-                                <p class="book-metadata">
-                                    First published: {{ result.first_publish_year }} | {{ result.edition_count }}
-                                    {% if result.edition_count == 1 %}
-                                        edition
-                                    {% else %}
-                                        editions
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </a>
+                {% if q and q != "" %}
+                    <div class="tab">
+                        <button class="tablinks" onclick="openSearchResults(event, 'Titles')" id="titleTab">Titles</button>
+                        <button class="tablinks" onclick="openSearchResults(event, 'Authors')" id="authorTab">Authors</button>
                     </div>
-                    {% endfor %}
-                    {% for pageId in book_results.pages %}
-                    <a href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
-                    {% endfor %}
-                </div>
-                <div id="Authors" class="tabcontent">
-                    {% for result in author_results %}
-                    <div class="results-container d-flex flex-column flex-md-row">
-                        <div class="results-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
-                            {% if result.cover_i %}
-                                <img src="https://covers.openlibrary.org/b/id/{{result.cover_i}}-M.jpg" alt="Book cover">
-                            {% else %}
-                                <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
-                            {% endif %}
-                        </div>
-                        <div class="results-text flex-grow-1 d-flex flex-column">
-                            <h4>{{ result.title|truncatechars:50 }}</h4>
-                            <p>
-                                {% if result.author_name|length == 1 %}
-                                    by {{ result.author_name.0|truncatechars:80 }}
-                                {% elif result.author_name|length > 1 %}
-                                    by {{ result.author_name|join:", "|truncatechars:80 }}
-                                {% else %}
-                                    Author Not Found
-                                {% endif %}
-                            </p>
-                            <p class="book-metadata">
-                                First published: {{ result.first_publish_year }} | {{ result.edition_count }}
-                                {% if result.edition_count == 1 %}
-                                    edition
-                                {% else %}
-                                    editions
-                                {% endif %}
-                            </p>
-                        </div>
+                    <div id="Titles" class="tabcontent">
+                        {% if book_results.results|length > 0 %}
+                            {% for result in book_results.results %}
+                                <div class="results-container d-flex flex-column flex-md-row">
+                                    <a class="text-decoration-none d-flex flex-column flex-md-row" href="#">
+                                        <div class="results-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
+                                            {% if result.cover_i %}
+                                                <img src="https://covers.openlibrary.org/b/id/{{result.cover_i}}-M.jpg" alt="Book cover">
+                                            {% else %}
+                                                <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
+                                            {% endif %}
+                                        </div>
+                                        <div class="results-text flex-grow-1 d-flex flex-column">
+                                            <h4>{{ result.title|truncatechars:50 }}</h4>
+                                            <p>
+                                                {% if result.author_name|length == 1 %}
+                                                    by {{ result.author_name.0|truncatechars:80 }}
+                                                {% elif result.author_name|length > 1 %}
+                                                    by {{ result.author_name|join:", "|truncatechars:80 }}
+                                                {% else %}
+                                                    Author Not Found
+                                                {% endif %}
+                                            </p>
+                                            <p class="book-metadata">
+                                                First published: {{ result.first_publish_year }} | {{ result.edition_count }}
+                                                {% if result.edition_count == 1 %}
+                                                    edition
+                                                {% else %}
+                                                    editions
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                            {% for pageId in book_results.pages %}
+                                <a href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                            {% endfor %}
+                        {% else %}
+                            <p>No results found.</p>
+                        {% endif %}
                     </div>
-                    {% endfor %}
-                </div>
+                    <div id="Authors" class="tabcontent">
+                        {% if author_results.results|length > 0 %}
+                            {% for result in author_results.results %}
+                                <div class="results-container d-flex flex-column flex-md-row">
+                                    <a class="text-decoration-none d-flex flex-column flex-md-row" href="#">
+                                        <div class="results-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
+                                            {% if result.cover_i %}
+                                                <img src="https://covers.openlibrary.org/b/id/{{result.cover_i}}-M.jpg" alt="Book cover">
+                                            {% else %}
+                                                <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
+                                            {% endif %}
+                                        </div>
+                                        <div class="results-text flex-grow-1 d-flex flex-column">
+                                            <h4>{{ result.title|truncatechars:50 }}</h4>
+                                            <p>
+                                                {% if result.author_name|length == 1 %}
+                                                    by {{ result.author_name.0|truncatechars:80 }}
+                                                {% elif result.author_name|length > 1 %}
+                                                    by {{ result.author_name|join:", "|truncatechars:80 }}
+                                                {% else %}
+                                                    Author Not Found
+                                                {% endif %}
+                                            </p>
+                                            <p class="book-metadata">
+                                                First published: {{ result.first_publish_year }} | {{ result.edition_count }}
+                                                {% if result.edition_count == 1 %}
+                                                    edition
+                                                {% else %}
+                                                    editions
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                            {% for pageId in author_results.pages %}
+                                <a href="/search/?q={{ q }}&author_page={{ pageId }}">{{ pageId }}</a>
+                            {% endfor %}
+                        {% else %}
+                            <p>No results found.</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
                 <script src="{% static 'search/js/search_tabs.js' %}"></script>
             </div>
         </div>
