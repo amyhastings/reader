@@ -27,7 +27,7 @@
                         {% if book_results.results|length > 0 %}
                             {% for result in book_results.results %}
                                 <div class="results-container d-flex flex-column flex-md-row">
-                                    <a class="text-decoration-none d-flex flex-column flex-md-row" href="#">
+                                    <a class="text-decoration-none d-flex flex-column flex-md-row" href="/book/{{ result.key }}">
                                         <div class="results-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
                                             {% if result.cover_i %}
                                                 <img src="https://covers.openlibrary.org/b/id/{{result.cover_i}}-M.jpg" alt="Book cover">
@@ -69,7 +69,7 @@
                         {% if author_results.results|length > 0 %}
                             {% for result in author_results.results %}
                                 <div class="results-container d-flex flex-column flex-md-row">
-                                    <a class="text-decoration-none d-flex flex-column flex-md-row" href="#">
+                                    <a class="text-decoration-none d-flex flex-column flex-md-row" href="/book/{{ result.key }}">
                                         <div class="results-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
                                             {% if result.cover_i %}
                                                 <img src="https://covers.openlibrary.org/b/id/{{result.cover_i}}-M.jpg" alt="Book cover">

@@ -9,42 +9,60 @@
     <main role="main" class="container flex-grow-1">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                    {% for result in book_results.results %}
-                    <div class="results-container d-flex flex-column flex-md-row">
-                        <a class="text-decoration-none d-flex flex-column flex-md-row" href="#">
-                            <div class="results-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
-                                {% if result.cover_i %}
-                                    <img src="https://covers.openlibrary.org/b/id/{{result.cover_i}}-M.jpg" alt="Book cover">
+                    <div class="d-flex flex-column flex-md-row">
+                            <div class="book-page-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
+                                {% if book.covers %}
+                                    <img src="https://covers.openlibrary.org/b/id/{{book.covers.0}}-M.jpg" alt="Book cover">
                                 {% else %}
                                     <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
                                 {% endif %}
+                                <button class="action-button btn btn-outline-default" type="button">Want to read</button>
+                                <button class="action-button btn btn-outline-default" type="button">Have read</button>
+                                <button class="action-button btn btn-outline-default" type="button">Recommend</button>
                             </div>
-                            <div class="results-text flex-grow-1 d-flex flex-column">
-                                <h4>{{ result.title }}</h4>
-                                <p>
-                                    {% if result.author_name|length == 1 %}
-                                        by {{ result.author_name.0 }}
-                                    {% elif result.author_name|length > 1 %}
-                                        by {{ result.author_name|join:", " }}
-                                    {% else %}
-                                        Author Not Found
-                                    {% endif %}
-                                </p>
+                            <div class="flex-grow-1 d-flex flex-column">
+                                <h4>{{ book.title }}</h4>
                                 <p class="book-metadata">
-                                    First published: {{ result.first_publish_year }} | {{ result.edition_count }}
-                                    {% if result.edition_count == 1 %}
+                                    First published: {{ pub_date_and_editions.first_publish_year }} | {{ pub_date_and_editions.edition_count }}
+                                    {% if pub_date_and_editions.edition_count == 1 %}
                                         edition
                                     {% else %}
                                         editions
                                     {% endif %}
-                                    | {{ result.rating }}
+                                    | Open Library Average Rating: {{ rating|floatformat:2 }}
                                 </p>
+                                <p>
+                                    {% if book.authors|length == 1 %}
+                                        by {{ book.authors.0 }}
+                                    {% elif book.authors|length > 1 %}
+                                        by {{ book.authors|join:", " }}
+                                    {% else %}
+                                        Author Not Found
+                                    {% endif %}
+                                </p>
+                                <p>
+                                    {% if book.description %}
+                                        {{ book.description }}
+                                    {% else %}
+                                        Description Not Found
+                                    {% endif %}
+                                </p>
+                                <p>
+                                    {% if book.subjects %}
+                                        Subjects:
+                                        {% if book.subjects|length == 1 %}
+                                            {{ book.subjects.0 }}
+                                        {% else %}
+                                            {{ book.subjects|join:", " }}
+                                        {% endif %}
+                                    {% endif %}
+                                </p>
+                                <div>
+                                    <h5>Community Reviews</h5>
+                                    <p>No reviews yet!</p>
+                                </div>
                             </div>
-                        </a>
                     </div>
-                    {% endfor %}
-                </div>
-                </div>
                 <!-- do I need this? -->
                 <script src="{% static 'search/js/search_tabs.js' %}"></script>
             </div>

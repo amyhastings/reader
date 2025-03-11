@@ -67,3 +67,27 @@ body {
   max-height: 100px;
   max-width: 100px;
 }
+
+
+/* Book page styling */
+.book-metadata {
+  font-size: small;
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+}
+
+.book-page-image {
+  height: 300px;
+  width: 200px;
+  padding-right: 40px;
+}
+
+.book-page-image img {
+  max-width: 170px;
+  padding-bottom: 40px;
+}
+
+.action-button {
+  border: 3px solid #b8a3cd;
+  margin: 10px;
+}
