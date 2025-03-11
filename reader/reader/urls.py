@@ -20,9 +20,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from search import views as search_views
+from users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('register/', user_views.register, name='register'),
+    path('login/', user_views.login, name='login'),
     path('search/', include ('search.urls')),
     path('book/<book_id>', search_views.book, name='view-book'),
 ]
