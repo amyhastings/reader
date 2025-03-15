@@ -1,2 +1,4 @@
 reader_env
 db.sqlite3
+htmlcov
+.coverage
