@@ -22,6 +22,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'search.apps.SearchConfig',
     'users.apps.UsersConfig',
+    'journal.apps.JournalConfig',
     'crispy_forms',
     'crispy_bootstrap5',
     'django.contrib.admin',
