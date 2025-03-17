@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from openlibrary.openlibrary import *
-from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from journal.models import Book, BookToUser
 
 def search(request):
     searchString = request.GET.get('q', False)
@@ -21,5 +23,19 @@ def book(request, *args, **kwargs):
     book = client.get_book_by_key(kwargs['book_id'])
     rating = client.get_book_ratings(kwargs['book_id'])
     pub_date_and_editions = client.get_pub_date_and_editions(kwargs['book_id'])
-    return render(request, 'search/book_page.html', {'book': book, 'rating': rating, 'pub_date_and_editions': pub_date_and_editions, 'olid': kwargs['book_id']})
+
+    if request.user.is_authenticated:
+        db_book = Book.objects.get(olid=kwargs['book_id'])
+        if db_book:
+            try:
+                book_to_user = BookToUser.objects.get(user=request.user, book=db_book)
+                current_status = book_to_user.state
+            except BookToUser.DoesNotExist:
+                current_status = None
+        else:
+            current_status = None
+    else:
+        current_status = None
+
+    return render(request, 'search/book_page.html', {'book': book, 'rating': rating, 'pub_date_and_editions': pub_date_and_editions, 'olid': kwargs['book_id'], 'current_status': current_status})
 

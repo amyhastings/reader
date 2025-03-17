@@ -64,6 +64,7 @@ class OpenLibraryClient:
                 book_json['description'] = book_json['description']['value']
         else:
             book_json['description'] = ""
+        book_json['olid'] = key
         return book_json
     
     def get_book_ratings(self, key):
