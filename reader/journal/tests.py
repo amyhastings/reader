@@ -7,7 +7,7 @@ class JournalAppTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='12345')
-        self.book = Book.objects.create(title='Test Book', author='Test Author', olid='OL12345M')
+        self.book = Book.objects.create(title='Test Book', authors='Test Author', olid='OL12345M')
         self.book_to_user = BookToUser.objects.create(user=self.user, book=self.book, state='WTR')
         self.journal_entry = JournalEntry.objects.create(user=self.user, book=self.book, entry='Test journal entry')
 
