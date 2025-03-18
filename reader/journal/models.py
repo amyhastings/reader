@@ -8,11 +8,21 @@ User = get_user_model()
 
 class Book(models.Model):
     olid = models.CharField(max_length=100)
-    author = models.CharField(max_length=1000)
+    authors = models.CharField(max_length=1000)
     title = models.CharField(max_length=1000)
+    cover = models.CharField(max_length=100, default="")
+
+    description = models.CharField(max_length=10000, default="")
+    first_publish_year = models.IntegerField(default=0)
+    rating = models.CharField(max_length=50, default="")
+    subjects = models.CharField(max_length=10000, default="")
+    edition_count = models.IntegerField(default=0)
+
+    current_status = None
     
     def __str__(self):
         return self.title
+
 
 class BookToUser(models.Model):
     WANT_TO_READ = "WTR"
@@ -27,15 +37,14 @@ class BookToUser(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='booktouser')
     state = models.CharField(max_length=3, choices=STATE_CHOICES, default=WANT_TO_READ)
     timestamp = models.DateTimeField(auto_now_add=True)
+    has_journal_entry = False
 
-    def __str__(self):
-        return self.title
+    def check_for_journal_entry(self, user):
+        self.has_journal_entry = JournalEntry.objects.filter(user=user, book=self.book).count() > 0
 
 class JournalEntry(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='journalentry')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='journalentry')
     entry = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return self.title
+

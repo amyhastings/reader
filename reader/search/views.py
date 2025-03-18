@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from openlibrary.openlibrary import *
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -15,27 +16,41 @@ def search(request):
         client = OpenLibraryClient()
         author_results = client.search_author(searchString, author_page)
         book_results = client.search_book(searchString, book_page)
+        if not author_results or not book_results:
+            return HttpResponse(status=500)
 
     return render(request, 'search/search.html', {'q': searchString, 'book_page': book_page, 'book_results': book_results, 'author_page': author_page, 'author_results': author_results})
 
 def book(request, *args, **kwargs):
-    client = OpenLibraryClient()
-    book = client.get_book_by_key(kwargs['book_id'])
-    rating = client.get_book_ratings(kwargs['book_id'])
-    pub_date_and_editions = client.get_pub_date_and_editions(kwargs['book_id'])
+    
+    # See if book already exists in DB
+    book = None
+    db_books = Book.objects.filter(olid=kwargs['book_id'])
+    if db_books.count() > 0:
+        book = db_books[0]
+    else:
+        client = OpenLibraryClient()
+        book = client.get_book_by_key(kwargs['book_id'])
+        rating = client.get_book_ratings(kwargs['book_id'])
+        pub_date_and_editions = client.get_pub_date_and_editions(kwargs['book_id'])
+        if not book or not rating or not pub_date_and_editions:
+            return HttpResponse(status=500)
+        new_book = Book(olid=book['olid'], authors=', '.join(book['authors']), 
+                        title=book['title'], cover=book['covers'][0], description=book['description'],
+                        first_publish_year=pub_date_and_editions['first_publish_year'], rating=rating,
+                        subjects=', '.join(book['subjects']), edition_count=pub_date_and_editions['edition_count'])
+        new_book.save()
+        book = new_book
 
     if request.user.is_authenticated:
-        db_book = Book.objects.get(olid=kwargs['book_id'])
-        if db_book:
-            try:
-                book_to_user = BookToUser.objects.get(user=request.user, book=db_book)
-                current_status = book_to_user.state
-            except BookToUser.DoesNotExist:
-                current_status = None
-        else:
-            current_status = None
+        try:
+            # Get reading list entries for this book
+            book_to_user = BookToUser.objects.get(user=request.user, book=book)
+            book.current_status = book_to_user.state
+        except BookToUser.DoesNotExist:
+            book.current_status = None
     else:
-        current_status = None
+        book.current_status = None
 
-    return render(request, 'search/book_page.html', {'book': book, 'rating': rating, 'pub_date_and_editions': pub_date_and_editions, 'olid': kwargs['book_id'], 'current_status': current_status})
+    return render(request, 'search/book_page.html', {'book': book})
 

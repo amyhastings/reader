@@ -1,0 +1,149 @@
+{% load static %}
+<head>
+    <title>Reader</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="{% static 'journal/css/journal.css' %}">
+</head>
+<body>
+    <!-- delete next three rows when base in place -->
+    <main role="main" class="container flex-grow-1">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h2>My Reading Lists</h2>
+                <div class="want-to-read-list">
+                    <div class="table-container mb-5">
+                        <table class="table-responsive">
+                            <thead>
+                                <tr>
+                                    <th colspan="5" scope="col" class="text-center h3">Books I Want to Read</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col" class="author">Author</th>
+                                    <th scope="col" class="date">Date</th>
+                                    <th scope="col" class="journal text-center">Journal Entry</th>
+                                    <th scope="col" class="actions text-center">Actions</th>
+                                </tr>
+                            </thead>
+                        <tbody>
+                            {% if user_books_wtr|length > 0 %}
+                                {% for book in user_books_wtr %}
+                                    <tr>
+                                        <td>{{book.book.title}}</td>
+                                        <td>{{book.book.authors}}</td>
+                                        <td>{{book.timestamp|date:"d M, Y"}}</td>
+                                        <td class="text-center">
+                                            {% if book.has_journal_entry %}
+                                                <a class="btn btn-sm btn-outline-secondary view-button" href="{% url 'view_journal_entry' book.book.id %}">View</a>
+                                            {% else %}
+                                                <a class="btn btn-sm btn-outline-secondary add-button" href="{% url 'add_journal_entry' book.book.id %}">Add</a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-sm btn-outline-secondary edit-button" href="#">Edit</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">No books on your 'Want to Read' list yet!</td>
+                                    </tr>
+                                {% endif %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="am-reading-list">
+                    <div class="table-container mb-5">
+                        <table class="table-responsive">
+                            <thead>
+                                <tr>
+                                    <th colspan="5" scope="col" class="text-center h3">Books I Am Reading</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col" class="author">Author</th>
+                                    <th scope="col" class="date">Date</th>
+                                    <th scope="col" class="journal text-center">Journal Entry</th>
+                                    <th scope="col" class="actions text-center">Actions</th>
+                                </tr>
+                            </thead>
+                        <tbody>
+                            {% if user_books_ar|length > 0 %}
+                                {% for book in user_books_ar %}
+                                    <tr>
+                                        <td>{{book.book.title}}</td>
+                                        <td>{{book.book.authors}}</td>
+                                        <td>{{book.timestamp|date:"d M, Y"}}</td>
+                                        <td class="text-center">
+                                            {% if book.has_journal_entry %}
+                                                <a class="btn btn-sm btn-outline-secondary view-button" href="{% url 'view_journal_entry' book.book.id %}">View</a>
+                                            {% else %}
+                                                <a class="btn btn-sm btn-outline-secondary add-button" href="{% url 'add_journal_entry' book.book.id %}">Add</a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-sm btn-outline-secondary edit-button" href="#">Edit</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">No books on your 'Am Reading' list yet!</td>
+                                    </tr>
+                                {% endif %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="have-read-list">
+                    <div class="table-container mb-5">
+                        <table class="table-responsive">
+                            <thead>
+                                <tr>
+                                    <th colspan="5" scope="col" class="text-center h3">Books I Have Read</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col" class="author">Author</th>
+                                    <th scope="col" class="date">Date</th>
+                                    <th scope="col" class="journal text-center">Journal Entry</th>
+                                    <th scope="col" class="actions text-center">Actions</th>
+                                </tr>
+                            </thead>
+                        <tbody>
+                            {% if user_books_hr|length > 0 %}
+                                {% for book in user_books_hr %}
+                                    <tr>
+                                        <td>{{book.book.title}}</td>
+                                        <td>{{book.book.authors}}</td>
+                                        <td>{{book.timestamp|date:"d M, Y"}}</td>
+                                        <td class="text-center">
+                                            {% if book.has_journal_entry %}
+                                                <a class="btn btn-sm btn-outline-secondary view-button" href="{% url 'view_journal_entry' book.book.id %}">View</a>
+                                            {% else %}
+                                                <a class="btn btn-sm btn-outline-secondary add-button" href="{% url 'add_journal_entry' book.book.id %}">Add</a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-sm btn-outline-secondary edit-button" href="#">Edit</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">No books on your 'Have Read' list yet!</td>
+                                    </tr>
+                                {% endif %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+            </div>
+        </div>
+    </main>
+</body>
