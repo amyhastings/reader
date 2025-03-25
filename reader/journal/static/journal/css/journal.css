@@ -55,3 +55,45 @@ th.author {
 td, thead {
     padding: 10px;
 }
+
+/* Journal list styling */
+.journal-list-container {
+    border-bottom: 1px solid #b8a3cd;
+    padding: 10px 20px;
+  }
+  
+.journal-list-container a {
+color: #333333;
+}
+
+.book-metadata {
+font-size: small;
+padding-bottom: 1px;
+margin-bottom: 4px;
+}
+
+.journal-list-image {
+height: 137px;
+min-width: 100px;
+}
+
+.journal-list-image img {
+max-height: 137px;
+max-width: 100px;
+}
+
+.journal-entry {
+    display: block;
+    width: 100%;
+}
+
+.btn-outline-default {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-outline-default:hover {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}

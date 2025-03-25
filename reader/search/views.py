@@ -35,10 +35,19 @@ def book(request, *args, **kwargs):
         pub_date_and_editions = client.get_pub_date_and_editions(kwargs['book_id'])
         if not book or not rating or not pub_date_and_editions:
             return HttpResponse(status=500)
+        print(book)
+        if not 'subjects' in book.keys():
+            subjects = ""
+        else:
+            subjects = ', '.join(book['subjects'])
+        if not 'covers' in book.keys():
+            cover = ""
+        else:
+            cover = book['covers'][0]
         new_book = Book(olid=book['olid'], authors=', '.join(book['authors']), 
-                        title=book['title'], cover=book['covers'][0], description=book['description'],
+                        title=book['title'], cover=cover, description=book['description'],
                         first_publish_year=pub_date_and_editions['first_publish_year'], rating=rating,
-                        subjects=', '.join(book['subjects']), edition_count=pub_date_and_editions['edition_count'])
+                        subjects=subjects, edition_count=pub_date_and_editions['edition_count'])
         new_book.save()
         book = new_book
 

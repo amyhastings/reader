@@ -1,7 +1,16 @@
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import get_user_model
 from .models import Book, BookToUser, JournalEntry
+
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy, reverse
+from django import forms
+from .forms import JournalEntryCreateForm
+
+User = get_user_model()
 
 @login_required
 def want_to_read(request, olid):
@@ -58,6 +67,12 @@ def have_read(request, olid):
     return JsonResponse({'status': 'error'}, status=400)
 
 @login_required
+def delete_book_to_user(request, book_id):
+    book_to_user = get_object_or_404(BookToUser, user=request.user, book_id=book_id)
+    book_to_user.delete()
+    return redirect('my_lists')
+
+@login_required
 def reading_list(request):
     user_books = BookToUser.objects.filter(user=request.user)
     journal_entry = JournalEntry.objects.filter(user=request.user)
@@ -85,3 +100,65 @@ def view_journal_entry(request, *args, **kwargs):
         return HttpResponseBadRequest()
     journal_entry = journal_entries[0]
     return render(request, 'journal/view_journal_entry.html', {'journal_entry': journal_entry})
+
+class UserJournalEntryListView(ListView):
+    model = JournalEntry
+    template_name = 'journal/my_journal.html'
+    context_object_name = 'user_journal_entries'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return JournalEntry.objects.filter(user=self.request.user).order_by('timestamp')
+
+@login_required
+def create_journal_entry(request, *args, **kwargs):
+    book = get_object_or_404(Book, id=kwargs['book_id'])
+
+    if request.method == 'POST':
+        form = JournalEntryCreateForm(request.POST)
+
+        if form.is_valid():
+            journal_entry = form.save(commit=False)
+            journal_entry.book = book
+            journal_entry.user = request.user
+            journal_entry.save()
+            return redirect(reverse('view_journal_entry', kwargs={'book_id': journal_entry.book.id}))
+
+    else:
+        form = JournalEntryCreateForm()
+    return render(request, 'journal/journal_entry_form.html', {'form': form, 'book': book})
+
+@login_required
+def change_book_status(request, book_id, status):
+    book_to_user = get_object_or_404(BookToUser, user=request.user, book_id=book_id)
+    book_to_user.state = status
+    book_to_user.save()
+    return redirect('my_lists')
+
+class JournalEntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView): 
+    model = JournalEntry
+    template_name = 'journal/update_journal_entry_form.html'
+    fields = ['entry']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        journal_entry = get_object_or_404(JournalEntry, id=self.kwargs['pk'])
+        return reverse_lazy('view_journal_entry', kwargs={'book_id': journal_entry.book.id})
+    
+    def test_func(self):
+        journal_entry = self.get_object()
+        return self.request.user == journal_entry.user
+    
+class JournalEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = JournalEntry
+    template_name = 'journal/journal_entry_confirm_delete.html'
+
+    def test_func(self):
+        journal_entry = self.get_object()
+        return self.request.user == journal_entry.user
+    
+    def get_success_url(self):
+        return reverse_lazy('all_journal_entries')

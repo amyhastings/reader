@@ -18,7 +18,7 @@
                                 {% endif %}
                                 {% if user.is_authenticated %}
                                     <div class="dropdown">
-                                        <button class="btn btn-outline-default dropdown-toggle action-button" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-outline-default dropdown-toggle action-button btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                             {% if book.current_status == 'WTR' %}
                                                 Want to read
                                             {% elif book.current_status == 'AR' %}
@@ -35,7 +35,8 @@
                                             <li><a class="dropdown-item" href="#" id="have-read-btn" data-olid="{{ book.olid }}" data-title="{{ book.title }}" data-author="{{ book.authors }}" data-cover="{{ book.cover }}">Have read</a></li>
                                         </ul>
                                     </div>
-                                    <button class="action-button btn btn-outline-default" type="button">Recommend</button>
+                                    <a class="action-button btn btn-outline-default btn-sm" href="{% url 'create_journal_entry' book.id %}">Add Journal Entry</a>
+                                    <button class="action-button btn btn-outline-default btn-sm" type="button">Recommend</button>
                                 {% endif %}
                             </div>
                             <div class="flex-grow-1 d-flex flex-column">
@@ -65,7 +66,7 @@
                                 </p>
                                 <p>
                                     {% if book.subjects|length > 0 %}
-                                        by {{ book.subjects }}
+                                        Subjects: {{ book.subjects }}
                                     {% else %}
                                         Subjects Not Found
                                     {% endif %}

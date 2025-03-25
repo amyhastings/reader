@@ -11,8 +11,8 @@
             <div class="col-md-8 mx-auto">
                 <div class="d-flex flex-column flex-md-row mb-5">
                     <div class="journal-list-image d-flex align-items-center me-md-3 mb-3 mb-md-0">
-                        {% if journal_entry.book.cover %}
-                            <img src="https://covers.openlibrary.org/b/id/{{journal_entry.book.cover}}-M.jpg" alt="Book cover">
+                        {% if journalentry.book.cover %}
+                            <img src="https://covers.openlibrary.org/b/id/{{journalentry.book.cover}}-M.jpg" alt="Book cover">
                         {% else %}
                             <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
                         {% endif %}
@@ -21,29 +21,38 @@
                         <h4 class="border-bottom pb-4 mb-4">
                             My Journal Entry
                         </h4>
-                        <h5>{{ journal_entry.book.title }}</h5>
+                        <h5>{{ journalentry.book.title }}</h5>
                         <p>
-                            {% if journal_entry.book.authors %}
-                                by {{ journal_entry.book.authors }}
+                            {% if journalentry.book.authors %}
+                                by {{ journalentry.book.authors }}
                             {% else %}
                                 Author Not Found
                             {% endif %}
                         </p>
                     </div>
                 </div>
-                <div class="journal-entry-text w-100 mt-3">
+                <div class="journal-entry-text w-100 mt-3 mb-5">
                     <div>
                         <p>
-                            {{ journal_entry.entry }}
+                            {{ journalentry.entry }}
                         </p>
                     </div>
                     <div class="article-metadata">
-                        <small class="text-muted">{{ journal_entry.timestamp }}</small>
+                        <small class="text-muted">{{ journalentry.timestamp }}</small>
                     </div>
                 </div>
-                <div class="d-flex justify-content-end mt-3">
-                    <a class="btn btn-sm btn-outline-secondary edit-button ms-2" href="{% url 'update_journal_entry' journal_entry.id %}">Edit</a>
-                    <a class="btn btn-sm btn-outline-secondary edit-button ms-2" href="{% url 'delete_journal_entry' journal_entry.id %}">Delete</a>
+                <div class="border border-danger border-2 rounded p-3">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                            <legend class="border-bottom mb-4">Delete Journal Entry</legend>
+                            <h4 class="mb-4">Are you sure you want to delete your journal entry on {{ journalentry.book.title }}?</h4>
+                        </fieldset>
+                        <div class="form-group">
+                            <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
+                            <a class="btn btn-outline-sec" href="{% url 'view_journal_entry' journalentry.book.id %}">Cancel</a>
+                        </div>
+                    </form>
                 </div>
             </div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
