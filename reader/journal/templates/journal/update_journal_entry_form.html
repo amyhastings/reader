@@ -1,39 +1,29 @@
-{% load static %}
+{% extends "recommendations/base.html" %}
 {% load crispy_forms_tags %}
-<head>
-    <title>Reader</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+{% load static %}
+{% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'journal/css/journal.css' %}">
-</head>
-<body>
-    <!-- delete next three rows when base in place -->
-    <main role="main" class="container flex-grow-1">
-        <div class="row">
-            <div class="col-md-8 mx-auto">
-                <div class="content-section">
-                    <h4>My Book Journal - {{ user.username }}</h4>
-                    <form method="POST" enctype="multipart/form-data" id="journalEntryForm">
-                        {% csrf_token %}
-                        <fieldset class="form-group">
-                            <legend class="border-bottom mb-4">
-                                {% if journalentry.book.authors %}
-                                    Journal Entry for {{ journalentry.book.title }} by {{ journalentry.book.authors }}
-                                {% else %}
-                                    Journal Entry for {{ journalentry.book.title }}
-                                {% endif %}
-                            </legend>
-                            {{ form|crispy }}
-                        </fieldset>
-                        <div class="form-group">
-                            <button class="btn btn-dark bg-blue" type="submit">
-                                Update Journal Entry
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <script src="/static/forum/js/validation.js"></script>
+{% endblock extra_css %}
+{% block content %}
+    <div>
+        <h4 class="mb-4 mt-4">My Book Journal - {{ user.username }}</h4>
+        <form method="POST" enctype="multipart/form-data" id="journalEntryForm">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">
+                    {% if journalentry.book.authors %}
+                        {{ journalentry.book.title }} by {{ journalentry.book.authors }}
+                    {% else %}
+                        {{ journalentry.book.title }}
+                    {% endif %}
+                </legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-dark bg-blue" type="submit">
+                    Update Journal Entry
+                </button>
             </div>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        </div>
-    </main>
-</body>
+        </form>
+    </div>
+{% endblock content %}
