@@ -21,7 +21,8 @@ urlpatterns = [
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'),
     path('search/', include ('search.urls')),
     path('book/<book_id>', search_views.book, name='view-book'),
-    path('journal/', include ('journal.urls'))
+    path('journal/', include ('journal.urls')),
+    path('', include ('recommendations.urls'))
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

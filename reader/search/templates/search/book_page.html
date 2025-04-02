@@ -36,7 +36,7 @@
                                         </ul>
                                     </div>
                                     <a class="action-button btn btn-outline-default btn-sm" href="{% url 'create_journal_entry' book.id %}">Add Journal Entry</a>
-                                    <button class="action-button btn btn-outline-default btn-sm" type="button">Recommend</button>
+                                    <a class="action-button btn btn-outline-default btn-sm" href="{% url 'create_recommendation' book.id %}">Recommend</a>
                                 {% endif %}
                             </div>
                             <div class="flex-grow-1 d-flex flex-column">

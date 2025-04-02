@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'search.apps.SearchConfig',
     'users.apps.UsersConfig',
     'journal.apps.JournalConfig',
+    'recommendations.apps.RecommendationsConfig',
     'crispy_forms',
     'crispy_bootstrap5',
     'django.contrib.admin',
