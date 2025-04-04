@@ -90,4 +90,9 @@ body {
 .action-button {
   border: 3px solid #b8a3cd;
   margin: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #b8a3cd; 
 }
