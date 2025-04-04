@@ -52,6 +52,38 @@ form .form-control:focus {
     font-weight: 500;
 }
 
+#book_search::placeholder {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.input-group-text {
+    background-color: transparent; 
+    border: none;
+    color: #6c757d;
+    padding: 0 10px;
+}
+
+#book_search {
+    width: 300px;
+    border-radius: 25px;
+    padding-right: 2.5rem;
+}
+
+.search-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%); 
+    background: none; 
+    border: none;
+    color: #6c757d;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+}
+
 /* Styling for Recommendations */
 
 .recommendation-author-img {
