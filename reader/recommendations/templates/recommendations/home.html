@@ -37,8 +37,8 @@
                   </h4>
               </div>
               <div class="d-flex align-items-center mb-2">
-                  <img class="rounded-circle recommendation-author-img me-2" src="{{ user.profile.get_image_url }}" alt="Recommendation author image">
-                  <p class="mb-0 fw-bold">Recommended by {{ user.username }}</p>
+                  <img class="rounded-circle recommendation-author-img me-2" src="{{ recommendation.user.profile.get_image_url }}" alt="Recommendation author image">
+                  <p class="mb-0 fw-bold">Recommended by {{ recommendation.user.username }}</p>
               </div>
               <p class="article-content">{{ recommendation.recommend_text|truncatechars:200 }} ... <a href="#">Read more</a></p>
           </div>
