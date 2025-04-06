@@ -14,7 +14,11 @@ class Recommendation(models.Model):
     recommend_who = models.TextField(blank=True)
     recommend_favourite_part = models.TextField(blank=True)
     recommend_why = models.TextField(blank=True)
-    upvotes = models.CharField(max_length=100)
-    downvotes = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+class RecommendationLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recommendation_likes')
+    recommendation = models.ForeignKey(Recommendation, on_delete=models.CASCADE, related_name='recommendation_likes')
+
+    class Meta:
+        unique_together = ('user', 'recommendation')  # Prevent duplicate likes from the same user

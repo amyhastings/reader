@@ -18,15 +18,15 @@
 
     {% for recommendation in recommendations %}
     <div class="row">
-      <div class="recommendation-container d-flex flex-row mb-4">
-          <div class="recommendation-book-image me-3 mb-4">
+      <div class="recommendation-container d-flex flex-column flex-md-row mb-4">
+          <div class="col-12 col-md-3 recommendation-book-image d-flex justify-content-center mb-3 mb-md-0">
               {% if recommendation.book.cover %}
                   <img src="https://covers.openlibrary.org/b/id/{{recommendation.book.cover}}-M.jpg" alt="Book cover">
               {% else %}
                   <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
               {% endif %}
           </div>
-          <div class="flex-grow-1">
+          <div class="col-12 col-md-9 flex-grow-1">
               <div class="d-flex align-items-center justify-content-between">
                   <h4 class="mb-2">
                       {% if recommendation.book.authors %}
@@ -40,7 +40,24 @@
                   <img class="rounded-circle recommendation-author-img me-2" src="{{ recommendation.user.profile.get_image_url }}" alt="Recommendation author image">
                   <p class="mb-0 fw-bold">Recommended by {{ recommendation.user.username }}</p>
               </div>
-              <p class="article-content">{{ recommendation.recommend_text|truncatechars:200 }} ... <a href="#">Read more</a></p>
+              <p class="article-content">{{ recommendation.recommend_text|truncatechars:400 }}<a href="{% url 'recommendation_detail' recommendation.pk %}" class="ms-2">Read more</a></p>
+              <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                      {% if recommendation.pk in user_likes %}
+                          <i id="like-{{ recommendation.pk }}" class="far fa-heart me-2 like-button inactive"></i>
+                          <i id="unlike-{{ recommendation.pk }}" class="fas fa-heart me-2 unlike-button"></i>
+                      {% else %}
+                          <i id="like-{{ recommendation.pk }}" class="far fa-heart me-2 like-button"></i>
+                          <i id="unlike-{{ recommendation.pk }}" class="fas fa-heart me-2 unlike-button inactive"></i>
+                      {% endif %}
+                      <p id="like_count-{{ recommendation.pk }}" class="mb-0">
+                          {{ recommendation.recommendation_likes.count }}
+                      </p>
+                  </div>
+                  <div class="article-metadata">
+                      <small class="text-muted">{{ recommendation.timestamp|date:'M jS Y, H:i' }}</small>
+                  </div>
+              </div>
           </div>
       </div>
     </div>

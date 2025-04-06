@@ -1,0 +1,66 @@
+{% extends "recommendations/base.html" %}
+{% load static %}
+{% block content %}
+    <p class="links mt-4 mb-4"><a href="{% url 'reader-home' %}">Recommendations</a> &gt; <a href="{% url 'view-book' recommendation.book.olid %}">{{ recommendation.book.title }}</a></p>
+    <div class="row">
+        <div class="recommendation-container d-flex flex-column flex-md-row mb-4 border-0">
+            <div class="col-12 col-md-3 recommendation-book-image d-flex justify-content-center mb-3 mb-md-0">
+                {% if recommendation.book.cover %}
+                    <img src="https://covers.openlibrary.org/b/id/{{recommendation.book.cover}}-M.jpg" alt="Book cover">
+                {% else %}
+                    <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
+                {% endif %}
+            </div>
+            <div class="col-12 col-md-9 flex-grow-1">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="mb-2">
+                        {% if recommendation.book.authors %}
+                            {{ recommendation.book.title }} by {{ recommendation.book.authors }}
+                        {% else %}
+                            {{ recommendation.book.title }}
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="d-flex align-items-center mb-4">
+                    <img class="rounded-circle recommendation-author-img me-2" src="{{ recommendation.user.profile.get_image_url }}" alt="Recommendation author image">
+                    <p class="mb-0 fw-bold">Recommended by {{ recommendation.user.username }}</p>
+                </div>
+                <div>
+                    <p>{{ recommendation.recommend_text }}</p>
+                    {% if recommendation.recommend_who %}
+                        <p class="fw-bold">Who do you think should read this book?</p>
+                        <p>{{ recommendation.recommend_who }}</p>
+                    {% endif %}
+                    {% if recommendation.recommend_favourite_part %}
+                        <p class="fw-bold">Did you have a favourite part of the book or is there a memorable quote that you loved?</p>
+                        <p>{{ recommendation.recommend_favourite_part }}</p>
+                    {% endif %}
+                    {% if recommendation.recommend_favourite_part %}
+                    <p class="fw-bold">What makes this recommendation personal?</p>
+                        <p>{{ recommendation.recommend_why }}</p>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        {% if user_has_liked %}
+                                <i id="like-{{ recommendation.pk }}" class="far fa-heart me-2 like-button inactive"></i>
+                                <i id="unlike-{{ recommendation.pk }}" class="fas fa-heart me-2 unlike-button"></i>
+                        {% else %}
+                                <i id="like-{{ recommendation.pk }}" class="far fa-heart me-2 like-button"></i>
+                                <i id="unlike-{{ recommendation.pk }}" class="fas fa-heart me-2 unlike-button inactive"></i>
+                        {% endif %}
+                        <p id="like_count-{{ recommendation.pk }}" class="mb-0">
+                            {{ recommendation.recommendation_likes.count }}
+                        </p>
+                    </div>
+                    <div class="article-metadata">
+                        <small class="text-muted">{{ recommendation.timestamp|date:'M jS Y, H:i' }}</small>
+                    </div>
+                </div>
+          </div>
+      </div>
+    </div>
+
+
+
+{% endblock content %}
