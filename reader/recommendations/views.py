@@ -70,7 +70,7 @@ def like_recommendation(request, pk):
     # Count the total likes for the recommendation
     likes_count = RecommendationLike.objects.filter(recommendation=recommendation).count()
 
-    return JsonResponse({'likes_count': likes_count})
+    return JsonResponse({'likes_count': likes_count}, status=200)
 
 class UserRecommendationListView(ListView):
     model = Recommendation
