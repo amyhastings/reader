@@ -4,6 +4,7 @@ from openlibrary.openlibrary import *
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from journal.models import Book, BookToUser
+from recommendations.models import Recommendation, RecommendationLike
 
 def search(request):
     searchString = request.GET.get('q', False)
@@ -61,5 +62,9 @@ def book(request, *args, **kwargs):
     else:
         book.current_status = None
 
-    return render(request, 'search/book_page.html', {'book': book})
+    recommendations = Recommendation.objects.filter(book=book)
+
+    user_likes = RecommendationLike.objects.filter(user=request.user).values_list('recommendation_id', flat=True)
+
+    return render(request, 'search/book_page.html', {'book': book, 'recommendations': recommendations, 'user_likes': user_likes})
 
