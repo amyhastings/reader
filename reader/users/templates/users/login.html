@@ -2,15 +2,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div>
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
     <div class="mt-4 mb-4">
         <form method="POST" class="mb-4 form-control">
             {% csrf_token %}

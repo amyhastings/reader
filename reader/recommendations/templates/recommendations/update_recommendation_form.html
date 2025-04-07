@@ -1,27 +1,22 @@
 {% extends "recommendations/base.html" %}
 {% load crispy_forms_tags %}
-{% load static %}
-{% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'journal/css/journal.css' %}">
-{% endblock extra_css %}
 {% block content %}
     <div>
-        <h4 class="mb-4 mt-4">My Book Journal - {{ journalentry.user.username }}</h4>
         <form method="POST" enctype="multipart/form-data" id="journalEntryForm">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">
-                    {% if journalentry.book.authors %}
-                        {{ journalentry.book.title }} by {{ journalentry.book.authors }}
+                    {% if recommendation.book.authors %}
+                        {{ user.username }}'s recommendation for {{ recommendation.book.title }} by {{ recommendation.book.authors }}
                     {% else %}
-                        {{ journalentry.book.title }}
+                        {{ user.username }}'s recommendation for {{ recommendation.book.title }}
                     {% endif %}
                 </legend>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-dark bg-blue" type="submit">
-                    Update Journal Entry
+                    Update Recommendation
                 </button>
             </div>
         </form>

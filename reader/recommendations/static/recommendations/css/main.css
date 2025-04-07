@@ -95,7 +95,7 @@ form .form-control:focus {
     width: 40px;
 }
 
-.recommendation-container {
+.recommendation-container-wrapper {
     border-bottom: 1px solid #cfb9ab;
     padding: 10px 20px;
 }

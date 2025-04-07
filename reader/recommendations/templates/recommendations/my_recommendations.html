@@ -1,0 +1,78 @@
+{% extends "recommendations/base.html" %}
+{% load static %}
+{% block content %}
+    <h3 class="fw-bold text-center mt-4 mb-4">My Recommendations</h3>
+    {% if user_recommendations|length > 0 %}
+        {% for recommendation in user_recommendations %}
+            <div class="row">
+                <div class="recommendation-container-wrapper">
+                    <div class="recommendation-container d-flex flex-column flex-md-row mt-4 mb-4 position-relative">
+                        <div class="col-12 col-md-3 recommendation-book-image d-flex justify-content-center mb-3 mb-md-0">
+                            {% if recommendation.book.cover %}
+                                <img src="https://covers.openlibrary.org/b/id/{{recommendation.book.cover}}-M.jpg" alt="Book cover">
+                            {% else %}
+                                <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
+                            {% endif %}
+                        </div>
+                        <div class="col-12 col-md-9 flex-grow-1 d-flex flex-column">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h4 class="mb-2">
+                                    {% if recommendation.book.authors %}
+                                        {{ recommendation.book.title }} by {{ recommendation.book.authors }}
+                                    {% else %}
+                                        {{ recommendation.book.title }}
+                                    {% endif %}
+                                </h4>
+                            </div>
+                            <p class="article-content">{{ recommendation.recommend_text|truncatechars:400 }}<a href="{% url 'recommendation_detail' recommendation.pk %}" class="ms-2">Read more</a></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    {% if recommendation.pk in user_likes %}
+                                        <i id="like-{{ recommendation.pk }}" class="far fa-heart me-2 like-button inactive"></i>
+                                        <i id="unlike-{{ recommendation.pk }}" class="fas fa-heart me-2 unlike-button"></i>
+                                    {% else %}
+                                        <i id="like-{{ recommendation.pk }}" class="far fa-heart me-2 like-button"></i>
+                                        <i id="unlike-{{ recommendation.pk }}" class="fas fa-heart me-2 unlike-button inactive"></i>
+                                    {% endif %}
+                                    <p id="like_count-{{ recommendation.pk }}" class="mb-0">
+                                        {{ recommendation.recommendation_likes.count }}
+                                    </p>
+                                </div>
+                                <div class="article-metadata">
+                                    <small class="text-muted">{{ recommendation.timestamp|date:'M jS Y, H:i' }}</small>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-auto">
+                                <a class="btn btn-sm btn-outline-secondary edit-button ms-2" href="{% url 'update_recommendation' recommendation.id %}">Edit</a>
+                                <a class="btn btn-sm btn-outline-secondary edit-button ms-2" href="{% url 'delete_recommendation' recommendation.id %}">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="links">No recommendations yet. Browse recommendations submitted by the <span class="logo h5">reader.</span> community on the <a href="{% url 'reader-home' %}">home page</a>.</p>
+    {% endif %}
+    {% if is_paginated %}
+    <div class="post-pagination">
+        {% if page_obj.has_previous %}
+            <a class="action-button btn btn-outline-default mb-4" href="?page=1">First</a>
+            <a class="action-button btn btn-outline-default mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a class="action-button btn btn-outline-default mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a class="action-button btn btn-outline-default mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <a class="action-button btn btn-outline-default mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="action-button btn btn-outline-default mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+
+{% endblock content %}
