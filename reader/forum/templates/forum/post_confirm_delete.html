@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'forum/css/forum.css' %}">
 {% endblock extra_css %}
 {% block content %}
-    <div class="content-section">
+    <div class="post-confirm-delete">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">

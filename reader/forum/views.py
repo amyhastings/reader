@@ -58,7 +58,7 @@ def create_thread(request):
             post.thread = thread
             post.author = request.user
             post.save()
-            return redirect("/topic/%d/thread/%d" % (thread.topic.id, thread.id))
+            return redirect("/forum/topic/%d/thread/%d" % (thread.topic.id, thread.id))
 
     else:
         t_form = ThreadCreateForm()

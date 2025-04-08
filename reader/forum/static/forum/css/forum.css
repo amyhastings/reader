@@ -3,19 +3,19 @@
     color: #333333 !important;
 }
 
+.topic-container {
+    border-bottom: 1px solid #cfb9ab;
+    padding: 20px 0px;
+}
+
+.post-container {
+    background-color: rgba(207, 185, 171, 0.3);
+    border-radius: 5px;
+    padding: 10px;
+}
+
 .post-count {
 color: #333333;
-}
-
-
-.links a {
-color: #3D52A0;
-font-weight: bold;
-text-decoration: none;
-}
-
-.links a:hover {
-text-decoration: underline;
 }
 
 .article-metadata a {

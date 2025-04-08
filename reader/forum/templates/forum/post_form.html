@@ -5,7 +5,7 @@
 {% endblock extra_css %}
 {% block content %}
     {% load crispy_forms_tags %}
-    <div class="content-section">
+    <div class="post-form">
         <form method="POST" enctype="multipart/form-data" id="postForm">
             {% csrf_token %}
             <fieldset class="form-group">

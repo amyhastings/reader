@@ -4,40 +4,49 @@
     <link rel="stylesheet" type="text/css" href="{% static 'forum/css/forum.css' %}">
 {% endblock extra_css %}
 {% block content %}
-    <h3 class="mb-3">
+    <h3 class="mt-4 mb-4">
     Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})
     </h3>
-    {% for post in posts %}
-    <article class="media content-section">
-        <div class="d-flex">
-            <div class="d-flex flex-column align-items-center me-3">
-                <img class="rounded-circle post-author-img mb-2" src="{{ post.author.profile.get_image_url }}" alt="User image">
-                <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
-            </div>
-            <div class="media-body flex-grow-1">
-                <div>
-                    <p class="article-content">{{ post.content }}</p>
-                    {% if post.image %}
-                        <div class="img-container">
-                            <img class="img-responsive img-fluid mb-3" src="{{ post.get_image_url }}" alt="User image">
+    {% if posts %}
+        {% for post in posts %}
+            <article class="post-container mb-3">
+                <div class="d-flex">
+                    <div class="d-flex flex-column align-items-center me-3">
+                        <img class="rounded-circle post-author-img mb-2" src="{{ post.author.profile.get_image_url }}" alt="User image">
+                        <p class="ms-2 mb-0 ms-md-0 mt-md-2 author-name">{{ post.author }}</p>
+                    </div>
+                    <div class="media-body flex-grow-1">
+                        <div>
+                            <p class="article-content">{{ post.content }}</p>
+                            {% if post.image %}
+                                <div class="img-container">
+                                    <img class="img-responsive img-fluid mb-3" src="{{ post.get_image_url }}" alt="User image">
+                                </div>
+                            {% endif %}
                         </div>
-                    {% endif %}
-                </div>
-                <div class="d-flex flex-column align-items-end ms-auto">
-                    {% if user == post.author %}
-                        <div class="d-flex flex-row align-items-end">
-                            <a class="btn btn-secondary btn-sm mt-1 mb-1 me-2" href="{% url 'post-update' post.thread.topic.id post.thread.id post.id %}">Edit</a>
-                            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' post.thread.topic.id post.thread.id post.id %}">Delete</a>
+                        <div class="d-flex flex-column align-items-end ms-auto">
+                            {% if user == post.author %}
+                                <div class="d-flex flex-row align-items-end">
+                                    <a class="btn btn-secondary btn-sm mt-1 mb-1 me-2" href="{% url 'post-update' post.thread.topic.id post.thread.id post.id %}">Edit</a>
+                                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' post.thread.topic.id post.thread.id post.id %}">Delete</a>
+                                </div>
+                            {% endif %}
+                            <div class="article-metadata">
+                                <small class="text-muted">{{ post.timestamp }}</small>
+                            </div>
                         </div>
-                    {% endif %}
-                    <div class="article-metadata">
-                        <small class="text-muted">{{ post.timestamp }}</small>
                     </div>
                 </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        <article class="no-posts-msg mt-4">
+            <div  class="d-flex flex-column align-items-center justify-content-center">
+                <p>You haven't posted on any threads yet!</p>
+                <p class="links">Why not head to the <a href="{% url 'topic-list' %}">discussion forum</a> to take part?</p>
             </div>
-        </div>
-    </article>
-    {% endfor %}
+        </article>
+    {% endif %}
     {% if is_paginated %}
         <div class="post-pagination">
             {% if page_obj.has_previous %}

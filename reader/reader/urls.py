@@ -23,7 +23,7 @@ urlpatterns = [
     path('book/<book_id>', search_views.book, name='view-book'),
     path('journal/', include ('journal.urls')),
     path('', include ('recommendations.urls')),
-    path('forum/', include ('forum.urls'))
+    path('forum/', include ('forum.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

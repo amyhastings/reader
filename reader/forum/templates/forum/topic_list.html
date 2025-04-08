@@ -5,7 +5,7 @@
 {% endblock extra_css %}
 {% block content %}
     <div class="d-flex justify-content-center">
-        <h2 class="article-title mb-3">Discussion Forum</h2>
+        <h2 class="article-title mt-4 mb-4">Discussion Forum</h2>
     </div>
     <article class="mb-4">
         <div>
@@ -20,15 +20,14 @@
             </p>
         </div>
     </article>
-
     {% for topic in topics %}
-        <article class="media content-section">
-            <div class="media-body">
+        <article class="topic-container">
+            <div>
                 <a class="text-decoration-none" href="{% url 'threads-by-topic' topic.id %}">
                     <div class="d-flex align-items-center justify-content-between">
                         <h4 class="article-title mb-2">{{ topic.title }}</h4>
                         <div class="d-flex align-items-center ms-3">
-                        <img class="img-responsive img-fluid me-2" src="static/forum/images/threads.png" alt="Threads">
+                        <img class="img-responsive img-fluid me-2" src="{% static 'forum/images/threads.png' %}" alt="Threads">
                         <p class="article-content mb-0">{{ topic.thread_count }}</p>
                         </div>
                     </div>

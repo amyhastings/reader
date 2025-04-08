@@ -30,7 +30,7 @@
             <div class="navbar-nav ml-auto">
               <a class="nav-item nav-link" href="{% url 'reader-home' %}">Home</a>
               <a class="nav-item nav-link" href="{% url 'reader-home' %}">Recommendations</a>
-              <a class="nav-item nav-link" href="#">Community</a>
+              <a class="nav-item nav-link" href="{% url 'topic-list' %}">Community</a>
             </div>
             <!-- Search Bar -->
             <form id="search_form" method="GET" action="{% url 'search' %}" class="d-flex me-auto">
@@ -51,6 +51,7 @@
                       <li><a class="dropdown-item" href="{% url 'my_lists' %}">My Lists</a></li>
                       <li><a class="dropdown-item" href="{% url 'all_journal_entries' %}">My Journal</a></li>
                       <li><a class="dropdown-item" href="{% url 'all_user_recommendations' %}">My Recommendations</a></li>
+                      <li><a class="dropdown-item" href="{% url 'user-posts' user.username %}">My Posts</a></li>
                       <li>
                         <form action="{% url 'logout' %}" method="POST" class="d-inline">
                           {% csrf_token %}
