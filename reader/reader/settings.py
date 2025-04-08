@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'journal.apps.JournalConfig',
     'recommendations.apps.RecommendationsConfig',
+    'forum.apps.ForumConfig',
     'crispy_forms',
     'crispy_bootstrap5',
     'django.contrib.admin',

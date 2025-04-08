@@ -1,0 +1,90 @@
+/* Styling for Thread List, Thread Post List and User Posts Pages */
+.thread-title p {
+    color: #333333 !important;
+}
+
+.post-count {
+color: #333333;
+}
+
+
+.links a {
+color: #3D52A0;
+font-weight: bold;
+text-decoration: none;
+}
+
+.links a:hover {
+text-decoration: underline;
+}
+
+.article-metadata a {
+color: #444444;
+font-weight: bold;
+text-decoration: none;
+}
+
+.article-metadata a:hover {
+text-decoration: underline;
+color: #3D52A0;
+}
+
+.article-title {
+color: #444444;
+}
+
+.article a {
+text-decoration: none;
+}
+
+.article-content {
+color: #444444 !important;
+white-space: pre-line;
+}
+
+.article-subheading {
+font-weight: bold;
+}
+
+.article-metadata {
+font-size: small;
+padding-bottom: 1px;
+margin-bottom: 4px;
+border-bottom: 1px solid #e3e3e3
+}
+
+.author-img {
+height: 40px;
+width: 40px;
+}
+
+.post-author-img {
+height: 90px;
+width: 90px;
+}
+
+.author-name {
+color: #444444;
+font-size: small;
+font-weight: bold;
+}
+
+.author-info {
+width: 110px;
+}
+
+.post-count {
+min-width: 65px;
+}
+
+.img-container {
+width: 100%;
+}
+
+.error {
+color: #444444;
+}
+  
+
+  
+  

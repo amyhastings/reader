@@ -1,0 +1,22 @@
+{% extends "recommendations/base.html" %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'forum/css/forum.css' %}">
+{% endblock extra_css %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">New Thread</legend>
+            {{ t_form|crispy }}
+            {{ p_form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="action-button btn btn-outline-default" type="submit">Post</button>
+        </div>
+    </form>
+
+</div>
+{% endblock content %}
