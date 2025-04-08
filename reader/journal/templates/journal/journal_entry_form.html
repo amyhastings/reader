@@ -10,7 +10,7 @@
     <main role="main" class="container flex-grow-1">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <div class="content-section">
+                <div>
                     <h4>My Book Journal - {{ user.username }}</h4>
                     <form method="POST" enctype="multipart/form-data" id="journalEntryForm">
                         {% csrf_token %}
@@ -25,7 +25,7 @@
                             {{ form|crispy }}
                         </fieldset>
                         <div class="form-group">
-                            <button class="btn btn-dark bg-blue" type="submit">
+                            <button class="action-button btn btn-outline-default" type="submit">
                                 Add Journal Entry
                             </button>
                         </div>
