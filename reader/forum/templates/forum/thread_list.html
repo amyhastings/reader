@@ -29,6 +29,7 @@
                 </div>
             </article>
         {% endfor %}
+        <a class="action-button btn btn-outline-default mt-4" href="{% url 'thread-create' %}">Create a Thread</a>
     {% else %}
         <article class="no-thread-msg mt-4">
             <div  class="d-flex flex-column align-items-center justify-content-center">
