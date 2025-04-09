@@ -20,9 +20,9 @@ class JournalAppTests(TestCase):
     
     def test_add_journal_entry_view(self):
         self.client.login(username='testuser', password='12345')
-        response = self.client.get(reverse('add_journal_entry', args=[self.book.id]))
+        response = self.client.get(reverse('create_journal_entry', args=[self.book.id]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'journal/add_journal_entry.html')
+        self.assertTemplateUsed(response, 'journal/journal_entry_form.html')
 
     def test_view_journal_entry_view(self):
         self.client.login(username='testuser', password='12345')
@@ -42,7 +42,7 @@ class JournalAppTests(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_add_journal_entry_view_not_logged_in(self):
-        response = self.client.get(reverse('add_journal_entry', args=[self.book.id]))
+        response = self.client.get(reverse('create_journal_entry', args=[self.book.id]))
         self.assertEqual(response.status_code, 302)
 
     def test_view_journal_entry_view_not_logged_in(self):
