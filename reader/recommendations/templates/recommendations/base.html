@@ -20,29 +20,35 @@
   </head>
   <body class="d-flex flex-column min-vh-100">
     <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-beige fixed-top">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-beige fixed-top">
         <div class="container">
           <a class="navbar-brand mr-4" href="{% url 'reader-home' %}"><h2 class="logo text-grey">reader.</h2></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+          
+          <!-- Search Bar for Medium and Large Screens -->
+          <form id="search_form" method="GET" action="{% url 'search' %}" class="d-none d-md-flex mx-auto flex-grow-1 justify-content-center">
+            <div class="position-relative">
+              <input type="text" id="book_search" name="q" class="form-control rounded-pill" placeholder="Powered by Open Library" style="padding-right: 2.5rem;">
+              <button type="submit" class="btn search-icon position-absolute top-50 translate-middle-y" style="right: 10px;">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <!-- Link to Search Page for Small Screens -->
+          <a class="search-icon-standalone d-md-none ms-auto" href="{% url 'search' %}">
+            <i class="fas fa-search"></i>
+          </a>
+
+          <!-- Collapsible Menu Icon -->
+          <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <div class="navbar-nav ml-auto">
-              <a class="nav-item nav-link" href="{% url 'reader-home' %}">Home</a>
-              <a class="nav-item nav-link" href="{% url 'reader-home' %}">Recommendations</a>
-              <a class="nav-item nav-link" href="{% url 'topic-list' %}">Community</a>
-            </div>
-            <!-- Search Bar -->
-            <form id="search_form" method="GET" action="{% url 'search' %}" class="d-flex me-auto">
-                <div class="position-relative">
-                    <input type="text" id="book_search" name="q" class="form-control rounded-pill" placeholder="Powered by Open Library" style="padding-right: 2.5rem;">
-                    <button type="submit" class="btn search-icon">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </form>
+          <div class="collapse navbar-collapse no-flex-grow" id="collapsibleNavbar">
             <!-- Navbar Right Side -->
               <div class="navbar-nav ms-auto">
+                  <a class="nav-item nav-link" href="{% url 'reader-home' %}">Home</a>
+                  <a class="nav-item nav-link" href="{% url 'reader-home' %}">Recommendations</a>
+                  <a class="nav-item nav-link" href="{% url 'topic-list' %}">Community</a>
                   {% if user.is_authenticated %}
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ user.username }}</a>

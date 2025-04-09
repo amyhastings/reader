@@ -56,6 +56,14 @@ form .form-control:focus {
     font-weight: 500;
 }
 
+.navbar-dark .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23333333' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.no-flex-grow {
+    flex-grow: 0 !important;
+}
+
 #book_search::placeholder {
     font-size: 0.85rem;
     color: #6c757d;
@@ -74,6 +82,10 @@ form .form-control:focus {
     padding-right: 2.5rem;
 }
 
+#search_form {
+    max-width: 300px; /* Limit the width of the search bar */
+}
+
 .search-icon {
     position: absolute;
     right: 20px;
@@ -81,12 +93,18 @@ form .form-control:focus {
     transform: translateY(-50%); 
     background: none; 
     border: none;
-    color: #6c757d;
+    color: #333333;
     font-size: 1rem;
     cursor: pointer;
     padding: 0;
     outline: none;
 }
+
+.search-icon-standalone {
+    color: #333333;
+    text-decoration: none;
+}
+
 
 /* Styling for Recommendations */
 
