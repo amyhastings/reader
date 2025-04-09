@@ -148,12 +148,27 @@ text-decoration: underline;
     width: 125px;
     margin-right: 20px;
     margin-bottom: 16px;
-  }
+}
   
-  .account-heading {
-    font-size: 2.5rem;
-  }
-  
-  .logout {
-    color: #444444;
-  }
+.account-heading {
+font-size: 2.5rem;
+}
+
+.logout {
+color: #444444;
+}
+
+/* Styling for progress bar */
+
+#progress-bar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1050;
+}
+
+#progress-bar {
+    background-color: #b8a3cd;
+    height: 25px;
+}
