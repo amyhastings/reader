@@ -22,8 +22,11 @@ class RecommendationListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         recommendations = self.get_queryset()
-        user_likes = RecommendationLike.objects.filter(user=self.request.user).values_list('recommendation_id', flat=True)
-        context['user_likes'] = user_likes 
+        if self.request.user.is_authenticated:
+            user_likes = RecommendationLike.objects.filter(user=self.request.user).values_list('recommendation_id', flat=True)
+            context['user_likes'] = user_likes
+        else:
+            context['user_likes'] = []
         return context
 
 @login_required
