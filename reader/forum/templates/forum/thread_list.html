@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'forum/css/forum.css' %}">
 {% endblock extra_css %}
 {% block content %}
-    <p class="links"><a href="{% url 'topic-list' %}">Forums</a> &gt; <a href="{% url 'threads-by-topic' topic.id %}">{{ topic.title }}</a></p>
+    <p class="links mb-4"><a href="{% url 'topic-list' %}">Forums</a> &gt; <a href="{% url 'threads-by-topic' topic.id %}">{{ topic.title }}</a></p>
     {% if threads %}
         {% for thread in threads %}
             <article class="thread-container mb-2">
@@ -29,7 +29,9 @@
                 </div>
             </article>
         {% endfor %}
-        <a class="action-button btn btn-outline-default mt-4" href="{% url 'thread-create' %}">Create a Thread</a>
+        <div class="text-center">
+            <a class="action-button btn btn-outline-default mt-4" href="{% url 'thread-create' %}">Create a Thread</a>
+        </div>
     {% else %}
         <article class="no-thread-msg mt-4">
             <div  class="d-flex flex-column align-items-center justify-content-center">
