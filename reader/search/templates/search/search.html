@@ -52,9 +52,36 @@
                         </a>
                     </div>
                 {% endfor %}
-                {% for pageId in book_results.pages %}
-                    <a href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
-                {% endfor %}
+                {% if book_results.pages|length < 6 %}
+                    {% for pageId in book_results.pages %}
+                        {% if pageId == book_page %}
+                            <a class="action-button-pages-selected btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                        {% else %}
+                            <a class="action-button-pages btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="mt-2 fewer-pages" id="fewer-pages">
+                        {% for pageId in book_results.pages|slice:":5" %}
+                            {% if pageId == book_page %}
+                                <a class="action-button-pages-selected btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                            {% else %}
+                                <a class="action-button-pages btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        <a class="action-button-pages btn btn-outline-default show-all-pages-btn mb-2" id="show-all-pages-btn">Show all pages</a>
+                    </div>
+                    <div class="mt-2 all-pages inactive" id="all-pages">
+                        {% for pageId in book_results.pages %}
+                            {% if pageId == book_page %}
+                                <a class="action-button-pages-selected btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                            {% else %}
+                                <a class="action-button-pages btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        <a class="action-button-pages btn btn-outline-default mb-2 show-fewer-pages-btn" id="show-fewer-pages-btn">Show fewer pages</a>
+                    </div>
+                {% endif %}
             {% else %}
                 <p>No results found.</p>
             {% endif %}
@@ -94,13 +121,43 @@
                         </a>
                     </div>
                 {% endfor %}
-                {% for pageId in author_results.pages %}
-                    <a href="/search/?q={{ q }}&author_page={{ pageId }}">{{ pageId }}</a>
-                {% endfor %}
+                <div>
+                    {% if author_results.pages|length < 6 %}
+                        {% for pageId in author_results.pages %}
+                            {% if pageId == author_page %}
+                                <a class="action-button-pages-selected btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                            {% else %}
+                                <a class="action-button-pages btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="mt-2 author-fewer-pages" id="author-fewer-pages">
+                            {% for pageId in author_results.pages|slice:":5" %}
+                                {% if pageId == author_page %}
+                                    <a class="action-button-pages-selected btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                                {% else %}
+                                    <a class="action-button-pages btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                                {% endif %}
+                            {% endfor %}
+                            <a class="action-button-pages btn btn-outline-default author-show-all-pages-btn mb-2" id="author-show-all-pages-btn">Show all pages</a>
+                        </div>
+                        <div class="mt-2 author-all-pages inactive" id="author-all-pages">
+                            {% for pageId in author_results.pages %}
+                                {% if pageId == author_page %}
+                                    <a class="action-button-pages-selected btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                                {% else %}
+                                    <a class="action-button-pages btn btn-outline-default mb-2" href="/search/?q={{ q }}&book_page={{ pageId }}">{{ pageId }}</a>
+                                {% endif %}
+                            {% endfor %}
+                            <a class="action-button-pages btn btn-outline-default mb-2 author-show-fewer-pages-btn" id="author-show-fewer-pages-btn">Show fewer pages</a>
+                        </div>
+                    {% endif %}
+                </div>
             {% else %}
                 <p>No results found.</p>
             {% endif %}
         </div>
     {% endif %}
     <script src="{% static 'search/js/search_tabs.js' %}"></script>
+    <script src="{% static 'search/js/results_pages.js' %}"></script>
 {% endblock content %}

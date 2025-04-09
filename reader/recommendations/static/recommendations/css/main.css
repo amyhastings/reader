@@ -21,7 +21,22 @@ body {
     margin: 10px;
     transition: background-color 0.3s, color 0.3s;
 }
-  
+
+.action-button-pages {
+    border: 3px solid #b8a3cd;
+    margin: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.action-button-pages:hover {
+    background-color: #b8a3cd; 
+}
+
+.action-button-pages-selected {
+    background-color: #b8a3cd; 
+    margin: 5px;
+}
+
 .action-button:hover {
 background-color: #b8a3cd; 
 }

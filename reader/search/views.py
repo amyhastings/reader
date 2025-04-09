@@ -8,8 +8,8 @@ from recommendations.models import Recommendation, RecommendationLike
 
 def search(request):
     searchString = request.GET.get('q', False)
-    book_page = request.GET.get('book_page', 1)
-    author_page = request.GET.get('author_page', 1)
+    book_page = int(request.GET.get('book_page', 1))
+    author_page = int(request.GET.get('author_page', 1))
     results = '{}'
     author_results = None
     book_results = None
