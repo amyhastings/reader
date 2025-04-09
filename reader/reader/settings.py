@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-e0c3q9qxd$*#myui&el9d!(=h^ef@fqp#b_ph%tv+hg-t7+13x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.environ.get('RENDER_HOSTNAME', '')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'reader.ie', os.environ.get('RENDER_HOSTNAME', '')]
 
 
 # Application definition
