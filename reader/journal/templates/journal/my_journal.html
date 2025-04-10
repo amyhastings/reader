@@ -18,14 +18,13 @@
                         </div>
                         <div class="col-12 col-md-9 journal-list-text flex-grow-1 d-flex flex-column">
                             <div class="mb-3 d-flex flex-row flex-nowrap align-items-baseline">
-                                <h4 class="me-2 mb-0">{{ journal_entry.book.title|truncatechars:50 }}</h4>
-                                <p class="me-2 mb-0">
+                                <h4 class="mb-2">
                                     {% if journal_entry.book.authors %}
-                                        by {{ journal_entry.book.authors }}
+                                        {{ journal_entry.book.title }} by {{ journal_entry.book.authors }}
                                     {% else %}
-                                        Author Not Found
+                                        {{ journal_entry.book.title }}
                                     {% endif %}
-                                </p>
+                                </h4>
                             </div>
                             <div class="journal-entry">
                                 <p>
