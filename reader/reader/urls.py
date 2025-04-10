@@ -7,7 +7,8 @@ from search import views as search_views
 from users import views as user_views
 from django.contrib.auth import views as auth_views
 
-handler500 = 'recommendations.views.error_500'
+handler500 = 'recommendations.views.error'
+handler400 = 'recommendations.views.error'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
