@@ -111,3 +111,6 @@ class RecommendationDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteVi
     
     def get_success_url(self):
         return reverse_lazy('all_user_recommendations')
+
+def error_500(request):
+    return render(request, 'recommendations/error_500.html', status=500)
