@@ -8,8 +8,8 @@
     <div>
         {% if user_journal_entries|length > 0 %}
             {% for journal_entry in user_journal_entries %}
-                <div class="journal-list-container d-flex flex-column flex-md-row">
-                        <div class="col-12 col-md-3 journal-list-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
+                <div class="journal-list-container d-flex flex-column flex-md-row position-relative">
+                        <div class="col-12 col-md-3 journal-list-image d-flex justify-content-center me-md-3 mb-3 mb-md-0">
                             {% if journal_entry.book.cover %}
                                 <img src="https://covers.openlibrary.org/b/id/{{journal_entry.book.cover}}-M.jpg" alt="Book cover">
                             {% else %}
