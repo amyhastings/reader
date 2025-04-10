@@ -1,6 +1,7 @@
 from django import forms
 from .models import Recommendation
 
+# Create a new Recommendation
 class RecommendationCreateForm(forms.ModelForm):
     class Meta:
         model = Recommendation
@@ -12,6 +13,7 @@ class RecommendationCreateForm(forms.ModelForm):
             'recommend_why': 'What makes this recommendation personal? Tell us about your own experience with the book—maybe it changed your perspective or helped you through a tough time.',
         }
 
+# Update and existing Recommendation
 class RecommendationUpdateForm(forms.ModelForm):
     class Meta:
         model = Recommendation

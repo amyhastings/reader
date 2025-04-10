@@ -12,6 +12,7 @@ from .forms import JournalEntryCreateForm
 
 User = get_user_model()
 
+# Mark this book as 'want to read' (called by js)
 @login_required
 def want_to_read(request, olid):
     if request.method == 'POST':
@@ -30,6 +31,7 @@ def want_to_read(request, olid):
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'}, status=400)
 
+# Mark this book as 'am reading' (called by js)
 @login_required
 def am_reading(request, olid):
     if request.method == 'POST':
@@ -48,6 +50,7 @@ def am_reading(request, olid):
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'}, status=400)
 
+# Mark this book as 'have read' (called by js)
 @login_required
 def have_read(request, olid):
     if request.method == 'POST':
@@ -66,12 +69,14 @@ def have_read(request, olid):
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'}, status=400)
 
+# Remove relationship between Book and User
 @login_required
 def delete_book_to_user(request, book_id):
     book_to_user = get_object_or_404(BookToUser, user=request.user, book_id=book_id)
     book_to_user.delete()
     return redirect('my_lists')
 
+# Show all Book to User relationships
 @login_required
 def reading_list(request):
     user_books = BookToUser.objects.filter(user=request.user)
@@ -89,18 +94,22 @@ def reading_list(request):
         user_book.check_for_journal_entry(request.user)
     return render(request, 'journal/reading_list.html', {'user_books_wtr': user_books_wtr, 'user_books_ar': user_books_ar, 'user_books_hr': user_books_hr, 'journal_entry': journal_entry})
 
+# Add a Journal Entry for this Book
 @login_required
 def add_journal_entry(request, *args, **kwargs):
     return render(request, 'journal/add_journal_entry.html')
 
+# Show a Journal Entry
 @login_required
 def view_journal_entry(request, *args, **kwargs):
     journal_entries = JournalEntry.objects.filter(user=request.user, book=kwargs['book_id'])
+    # Error handling
     if journal_entries.count() < 1:
         return HttpResponseBadRequest()
     journal_entry = journal_entries[0]
     return render(request, 'journal/view_journal_entry.html', {'journal_entry': journal_entry})
 
+# Show all Journal Entries
 class UserJournalEntryListView(ListView):
     model = JournalEntry
     template_name = 'journal/my_journal.html'
@@ -110,6 +119,7 @@ class UserJournalEntryListView(ListView):
     def get_queryset(self):
         return JournalEntry.objects.filter(user=self.request.user).order_by('timestamp')
 
+# Create a new Journal Entry
 @login_required
 def create_journal_entry(request, *args, **kwargs):
     book = get_object_or_404(Book, id=kwargs['book_id'])
@@ -128,6 +138,7 @@ def create_journal_entry(request, *args, **kwargs):
         form = JournalEntryCreateForm()
     return render(request, 'journal/journal_entry_form.html', {'form': form, 'book': book})
 
+# Change relationship between Book and User
 @login_required
 def change_book_status(request, book_id, status):
     book_to_user = get_object_or_404(BookToUser, user=request.user, book_id=book_id)
@@ -135,6 +146,7 @@ def change_book_status(request, book_id, status):
     book_to_user.save()
     return redirect('my_lists')
 
+# Show form to modify a Journal Entry
 class JournalEntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView): 
     model = JournalEntry
     template_name = 'journal/update_journal_entry_form.html'
@@ -151,7 +163,8 @@ class JournalEntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
     def test_func(self):
         journal_entry = self.get_object()
         return self.request.user == journal_entry.user
-    
+
+# Delete a Journal Entry
 class JournalEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = JournalEntry
     template_name = 'journal/journal_entry_confirm_delete.html'

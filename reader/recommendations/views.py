@@ -12,6 +12,7 @@ from .forms import RecommendationCreateForm, RecommendationUpdateForm
 
 User = get_user_model()
 
+# Show all Recommendations
 class RecommendationListView(ListView):
     model = Recommendation
     template_name = 'recommendations/home.html'
@@ -22,6 +23,7 @@ class RecommendationListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         recommendations = self.get_queryset()
+        # Get the ids of all of the Recommendations that the current user has liked so we can show them as liked in the UI
         if self.request.user.is_authenticated:
             user_likes = RecommendationLike.objects.filter(user=self.request.user).values_list('recommendation_id', flat=True)
             context['user_likes'] = user_likes
@@ -29,6 +31,7 @@ class RecommendationListView(ListView):
             context['user_likes'] = []
         return context
 
+# Create a new Recommendation
 @login_required
 def create_recommendation(request, *args, **kwargs):
     book = get_object_or_404(Book, id=kwargs['book_id'])
@@ -47,6 +50,7 @@ def create_recommendation(request, *args, **kwargs):
         form = RecommendationCreateForm()
     return render(request, 'recommendations/recommendation_form.html', {'form': form, 'book': book})
 
+# Show a particular Recommendation
 class RecommendationDetailView(DetailView):
     model = Recommendation
     template_name = 'recommendations/recommendation_detail.html'
@@ -61,6 +65,7 @@ class RecommendationDetailView(DetailView):
         ).exists()
         return context
 
+# Mark a particular Recommendation as liked by a User (called by js)
 @login_required
 def like_recommendation(request, pk):
     recommendation = get_object_or_404(Recommendation, pk=pk)
@@ -75,6 +80,7 @@ def like_recommendation(request, pk):
 
     return JsonResponse({'likes_count': likes_count}, status=200)
 
+# Show Recommendations for a particular User
 class UserRecommendationListView(ListView):
     model = Recommendation
     template_name = 'recommendations/my_recommendations.html'
@@ -84,6 +90,7 @@ class UserRecommendationListView(ListView):
     def get_queryset(self):
         return Recommendation.objects.filter(user=self.request.user).order_by('timestamp')
 
+# Update a Recommendation
 class RecommendationUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView): 
     model = Recommendation
     template_name = 'recommendations/update_recommendation_form.html'
@@ -100,7 +107,8 @@ class RecommendationUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateVi
     def test_func(self):
         recommendation = self.get_object()
         return self.request.user == recommendation.user
-    
+
+# Delete a Recommendation
 class RecommendationDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Recommendation
     template_name = 'recommendations/recommendation_confirm_delete.html'
@@ -112,5 +120,6 @@ class RecommendationDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteVi
     def get_success_url(self):
         return reverse_lazy('all_user_recommendations')
 
+# Generic error handler function
 def error(request, *args, **argv):
     return render(request, 'recommendations/error.html', status=404)

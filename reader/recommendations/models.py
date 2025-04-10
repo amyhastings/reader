@@ -7,6 +7,7 @@ from journal.models import Book
 
 User = get_user_model()
 
+# A User Recommends a Book to other Users
 class Recommendation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recommendation')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='recommendation')
@@ -16,6 +17,7 @@ class Recommendation(models.Model):
     recommend_why = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+# A User likes a Recommendation from another User
 class RecommendationLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recommendation_likes')
     recommendation = models.ForeignKey(Recommendation, on_delete=models.CASCADE, related_name='recommendation_likes')

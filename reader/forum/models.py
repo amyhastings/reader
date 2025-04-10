@@ -10,6 +10,7 @@ from django.templatetags.static import static
 
 User = get_user_model()
 
+# What is the thread about?
 class Topic(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=1000, default="")
@@ -17,6 +18,7 @@ class Topic(models.Model):
     def __str__(self):
         return self.title
 
+# Grouping of posts that form a thread
 class Thread(models.Model):
     title = models.CharField(max_length=200)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
@@ -30,6 +32,7 @@ class Thread(models.Model):
     def get_absolute_url(self):
         return reverse('view-thread', args=[str(self.topic.id), str(self.id)]) 
 
+# An individual post in a thread
 class Post(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     content = models.TextField()
