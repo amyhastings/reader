@@ -9,14 +9,14 @@
         {% if user_journal_entries|length > 0 %}
             {% for journal_entry in user_journal_entries %}
                 <div class="journal-list-container d-flex flex-column flex-md-row">
-                        <div class="journal-list-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
+                        <div class="col-12 col-md-3 journal-list-image d-flex flex-row flex-md-column align-items-center me-md-3 mb-3 mb-md-0">
                             {% if journal_entry.book.cover %}
                                 <img src="https://covers.openlibrary.org/b/id/{{journal_entry.book.cover}}-M.jpg" alt="Book cover">
                             {% else %}
                                 <img src="{% static 'search/images/defaultcover.jpg' %}" alt="No cover found">
                             {% endif %}
                         </div>
-                        <div class="journal-list-text flex-grow-1 d-flex flex-column">
+                        <div class="col-12 col-md-9 journal-list-text flex-grow-1 d-flex flex-column">
                             <div class="mb-3 d-flex flex-row flex-nowrap align-items-baseline">
                                 <h4 class="me-2 mb-0">{{ journal_entry.book.title|truncatechars:50 }}</h4>
                                 <p class="me-2 mb-0">
