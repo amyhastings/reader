@@ -72,7 +72,10 @@ def book(request, *args, **kwargs):
     # Get the recommendations for this book
     recommendations = Recommendation.objects.filter(book=book)
     # Get all RecommendationLikes for this user so we can mark them properly in the UI
-    user_likes = RecommendationLike.objects.filter(user=request.user).values_list('recommendation_id', flat=True)
+    if request.user.is_authenticated:
+        user_likes = RecommendationLike.objects.filter(user=request.user).values_list('recommendation_id', flat=True)
+    else:
+        user_likes = []
 
     return render(request, 'search/book_page.html', {'book': book, 'recommendations': recommendations, 'user_likes': user_likes})
 
