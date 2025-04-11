@@ -60,9 +60,11 @@ class RecommendationDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         recommendation = self.get_object()
         # Check if the current user has liked the recommendation
-        context['user_has_liked'] = RecommendationLike.objects.filter(
-            user=self.request.user, recommendation=recommendation
-        ).exists()
+        if self.request.user.is_authenticated:
+            user_likes = RecommendationLike.objects.filter(user=self.request.user).values_list('recommendation_id', flat=True)
+            context['user_likes'] = user_likes
+        else:
+            context['user_likes'] = []
         return context
 
 # Mark a particular Recommendation as liked by a User (called by js)
